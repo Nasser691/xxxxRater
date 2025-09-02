@@ -1,7 +1,23 @@
 import discord
 from discord.ext import commands
 import os
+import threading
+from flask import Flask
 
+# إعدادات Flask عشان Render يشوف Port مفتوح
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run_web():
+    app.run(host="0.0.0.0", port=8080)
+
+# تشغيل Flask في Thread ثاني
+threading.Thread(target=run_web).start()
+
+# إعدادات البوت
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
